@@ -1,33 +1,199 @@
 ---
 - summary: |
-    Регистрация нового пользователя
+    Проверка работы кнопки для перехода на страницу регистрации
   requirement: |
-    Пользователь должен иметь возможность зарегистрироваться на сайте
+    Приложение должно предоставлять пользователю возможность перейти на страницу регистрации
   prerequisites: |
-    Пользователь находится на странице регистрации сайта
+    Открыта главная страница
   test-data: |
     Нет данных
   steps:
-    - Вводим логин 
-    - Вводим пароль
-    - Вводим эмейл
-    - Нажимаем кнопку «Submit»
+    Нажать кнопку "Sign up" в шапке сайта
   expected-result: |
-    Пользователь перенаправляется на страницу входа или личный кабинет
+    Пользователь должен быть перенаправлен на страницу регистрации
+    Страница регистрации должна содержать форму для ввода никнейма, имейла, пароля
 
+- summary: |
+    Проверка работы кнопки для перехода на страницу входа
+  requirement: |
+    Приложение должно предоставлять пользователю возможность перейти на страницу входа
+  prerequisites: |
+    Открыта главная страница
+    Пользователь не должен быть авторизован в системе
+  test-data: |
+    Нет данных
+  steps:
+    Нажать кнопку "Sign in" в шапке сайта
+  expected-result: |
+    Пользователь должен быть перенаправлен на страницу входа
+    Страница входа должна содержать форму для ввода имейла и пароля
+
+- summary: |
+    Проверка работы кнопки для перехода на страницу входа со страницы регистрации
+  requirement: |
+    Приложение должно предоставлять пользователю возможность перейти на страницу входа
+  prerequisites: |
+    Открыта главная страница
+    Пользователь не должен быть авторизован в системе
+  test-data: |
+    Нет данных
+  steps:
+    - Открыть страницу регистрации
+    - Нажать кнопку "Sign in" под формой регистрации
+  expected-result: |
+    Открывается страница входа
+
+- summary: |
+    Проверка работы кнопки для перехода на страницу регистрации со страницы входа
+  requirement: |
+    Приложение должно предоставлять пользователю возможность перейти на страницу регистрации
+  prerequisites: |
+    Открыта главная страница
+    Пользователь не должен быть авторизован в системе
+  test-data: |
+    Нет данных
+  steps:
+    - Открыть страницу входа
+    - Нажать кнопку "Sign up" под формой входа 
+  expected-result: |
+    Открывается страница регистрации
+    
+- summary: |
+    Проверка регистрации нового пользователя с помощью формы регистрации
+  requirement: |
+    Пользователь должен иметь возможность зарегистрироваться на сайте   
+  prerequisites: |
+    Пользователь ранее не зарегистрирован
+    Пользователь находится на странице регистрации 
+  test-data: |
+    - Nickname = User_123 (ранее не используемый)
+    - Email = example@mail.ru (ранее не используемый)
+    - Password = example123!
+    - Password Confirmation = example123! 
+  steps:
+    - Открыть страницу регистрации
+    - Ввести Nickname
+    - Ввести Email
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Успешная регистрация
+    Происходит переход на главную страницу
+    В шапке сайта отображается никнейм "User_123"
+
+- summary: |
+    Проверка ошибки при регистрации с занятым Nickname
+  requirement: |
+    Пользователь должен иметь возможность зарегистрироваться на сайте 
+  prerequisites: |
+    Используемый Nickname ранее зарегистрирован
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Nickname" выделяется красным
+    Под полем ввода появляется "Nickname is already taken"
+    Регистрация не происходит
+
+- summary: |
+    Проверка ошибки при регистрации с занятым Email
+  requirement: |
+    Пользователь должен иметь возможность зарегистрироваться на сайте
+  prerequisites: |
+    Используемый Email ранее зарегистрирован
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Email" выделяется красным
+    Под полем ввода появляется "Email is already taken"
+    Регистрация не происходит    
+    
 - summary: |
     Проверка валидации поля "Nickname" при регистрации
   requirement: |
     Nickname при регистрации должен состоять от 3 до 16 латинских букв. Так же могут быть добавлены цифры и знак нижнего подчеркивания
   prerequisites: |
-    Пользователь находится на странице регистрации в поле "Nickname"
+    Пользователь находится на странице регистрации 
   test-data: |
-    Nickname = User_123
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
   steps:
-    - Ввести "User_123" в поле "Nickname".
-    - Завершить процесс регистрации
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
   expected-result: |
      Регистрация проходит успешно
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных "Nickname"
+  requirement: |
+    Nickname при регистрации должен состоять от 3 до 16 латинских букв. Так же могут быть добавлены цифры и знак нижнего подчеркивания
+  prerequisites: |
+    Пользователь ранее не зарегистрирован
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = user123456789qwerty
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
+  steps:
+    - Ввести Nickname = user123456789qwerty
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Nickname" выделяется красным
+    Под полем ввода появляется сообщение "Should be from 3 to 16 characters"
+    Регистрация не происходит     
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных "Nickname"
+  requirement: |
+     Nickname при регистрации должен состоять от 3 до 16 латинских букв. Так же могут быть добавлены цифры и знак нижнего подчеркивания
+  prerequisites: |
+    Пользователь ранее не зарегистрирован
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = юзер123!
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
+  steps:
+    - Открыть страницу регистрации
+    - Ввести Nickname = юзер123!
+    - Ввести Email = example@mail.com
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Nickname" выделяется красным
+    Под полем ввода появляется сообщение "Must consist of Latin letters, numbers and underscores. Only begin with latin letter"
+    Регистрация не происходит
 
 - summary: |
     Валидация email при регистрации
@@ -36,38 +202,182 @@
   prerequisites: |
     Пользователь находится на странице регистрации в поле "Email"
   test-data: |
-    Email = user@example.com
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
   steps:
-    - Ввести корректный адрес email "user@example.com"
-    - Попытаться завершить регистрацию
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
   expected-result: |
     Регистрация проходит успешно, без ошибок
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных email
+  requirement: |
+    Email при регистрации должен быть валидируемым
+  prerequisites: |
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = examplemail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = examplemail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "email" выделяется красным
+    Под полем ввода появляется сообщение "Invalid email"
+    Регистрация не происходит    
 
 - summary: |
     Валидация поля "Password" при регистрации
   requirement: |
     Password должен быть от 6 до 16 букв или цифр. Обязательно должен быть минимум один специальный символ
   prerequisites: |
-    Пользователь находится на странице регистрации в поле "Password"
+    Пользователь находится на странице регистрации
   test-data: |
-    Password = Password1234!
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example123!
   steps:
-    - Ввести "Password1234!" в поле "Password"
-    - Подтвердить регистрацию
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example123!
+    - Нажать кнопку «Submit»
   expected-result: |
     Регистрация проходит успешно, без ошибок
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных password
+  requirement: |
+    Password должен быть от 6 до 16 букв или цифр. Обязательно должен быть минимум один специальный символ
+  prerequisites: |
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123
+    - Password Confirmation = example123
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123
+    - Ввести Password Confirmation = example123
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Password" выделяется красным
+    Под полем ввода появляется сообщение "Should contain at least one special character"
+    Регистрация не происходит
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных password
+  requirement: |
+    Password должен быть от 6 до 16 букв или цифр. Обязательно должен быть минимум один специальный символ
+  prerequisites: |
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = ex12!
+    - Password Confirmation = ex12!
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = ex12!
+    - Ввести Password Confirmation = ex12!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Password" выделяется красным
+    Под полем ввода появляется сообщение "Should be from 6 to 16 characters"
+    Регистрация не происходит
+
+- summary: |
+    Проверка невозможности регистрации нового пользователя с помощью формы регистрации и ввода невалидных данных password confirmation
+  requirement: |
+    Password должен быть от 6 до 16 букв или цифр. Обязательно должен быть минимум один специальный символ
+  prerequisites: |
+    Пользователь находится на странице регистрации
+  test-data: |
+    - Nickname = User_123
+    - Email = example@mail.ru
+    - Password = example123!
+    - Password Confirmation = example1234!
+  steps:
+    - Ввести Nickname = User_123
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
+    - Ввести Password Confirmation = example1234!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Password confirmation" выделяется красным
+    Под полем ввода появляется сообщение "Passwords must match"
+    Регистрация не происходит
+
+- summary: |
+    Проверка отображения password при нажатии на иконку "глаз"
+  requirement: |
+    Пользователь должен иметь возможность просматривать пароль
+  prerequisites: |
+    Страница регистрации открыта
+  test-data: |
+    - Password = example123!
+  steps:
+    Нажать кнопку "глаз" в форме ввода
+  expected-result: |
+    Пароль становится видимым
+
+- summary: |
+    Проверка отображения Password Confirmation при нажатии на иконку "глаз"
+  requirement: |
+    Пользователь должен иметь возможность просматривать пароль
+  prerequisites: |
+    Страница регистрации открыта
+  test-data: |
+    - Password Confirmation = example123!
+  steps:
+    - Нажать кнопку "глаз" в форме ввода
+  expected-result: |
+    Подтверждение пароля становится видимым    
+
+- summary: |
+    Проверка ошибок при пустых полях формы регистрации
+  requirement: |
+    Пользователь должен иметь возможность зарегистрироваться на сайте
+  prerequisites: |
+    Страница регистрации открыта
+  test-data: |
+    Нет данных
+  steps:
+    Нажать кнопку "Submit"
+  expected-result: |
+    Все поля выделяются красным
+    Отображаются соответствующие сообщения об ошибке под каждым полем:
+    "Nickname required"
+    "Email required"
+    "Password required"
+    "Confirmation required"    
 
 - summary: |
     Проверка входа пользователя с существующими Email и Password
   requirement: |
     При верном вводе Email и Password, зарегистрированный пользователь должен войти на сайт
   prerequisites: |
-    Открыта страница "Sign in"
+    Открыта страница входа
   test-data: |
-    Email = user@example.com  Password = Password1234!
+    Email = example@mail.ru  Password = example123!
   steps:
-    - Вводим имейд
-    - Вводим пароль
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example123!
     - Нажимаем кнопку «Submit»
   expected-result: |
     Пользователь должен попасть на главную страницу
@@ -168,19 +478,42 @@
     Пользователь успешно входит в приложение с использованием учётной записи Discord
 
 - summary: |
-    Проверка входа пользователя с несуществующими Email и Password
+    Проверка невозможности входа по неправильному Email
   requirement: |
-    При вводе неправильного Email или Password пользователь должен получить сообщение об ошибке
-  prerequisites:
-    Открыта страница "Sign in"
+    Невозможность входа пользователя при вводе неправильного Email
+  prerequisites: |
+    Пользователь ранее зарегистрирован
+    Открыта страница входа
   test-data: |
-    Email = user100@example.com Password = Badpassword345
+    - Email = example123@mail.ru
+    - Password = example123!
   steps:
-    - Вводим имейл
-    - Вводим пароль
-    - Нажимаем кнопку «Submit»
+    - Ввести Email = example123@mail.ru
+    - Ввести Password = example123!
+    - Нажать кнопку «Submit»
   expected-result: |
-    Пользователь должен получить сообщение об ошибке
+    Поле ввода "Email" выделяется красным
+    Под полем ввода появляется сообщение "Invalid email"
+    Авторизация не происходит
+
+- summary: |  
+    Проверка невозмоможности входа по неправильному Password
+  requirement: |
+    Невозможность входа пользователя при вводе неправильного Password
+  prerequisites: |
+    Пользователь ранее зарегистрирован
+    Открыта страница входа
+  test-data: |
+    - Email = example@mail.ru
+    - Password = example1234!
+  steps:
+    - Ввести Email = example@mail.ru
+    - Ввести Password = example1234!
+    - Нажать кнопку «Submit»
+  expected-result: |
+    Поле ввода "Password" выделяется красным
+    Под полем ввода появляется сообщение "Incorrect password"
+    Авторизация не происходит    
 
 - summary: |
     Проверка возможности восстановления пароля 
